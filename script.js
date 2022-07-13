@@ -38,7 +38,7 @@ function playRound(player_choice, computer_choice=computerPlay() ){
         }
     }
 }
-function playGame(){
+function Game(){
     let playerScore = 0;
     let computerScore =0;
     let player_choice;
