@@ -9,7 +9,9 @@ newGameBtn.textContent = "NEW GAME";
 newGameBtn.setAttribute('id',"newGameBtn");
 newGameBtn.addEventListener('click', Game)
 
-buttons.forEach(button => button.addEventListener('click', function(e) {
+buttons.forEach(button => button.addEventListener('transitionend', removeBorder));
+
+function evaluateRound(e) {
     let outcome = playRound(this.dataset.choice);
     this.classList.add("selected")
     if (outcome.startsWith("You win")){
@@ -24,16 +26,17 @@ buttons.forEach(button => button.addEventListener('click', function(e) {
     if (computerPoints === 5){
         roundOutcome.textContent = "Computer won, I am sorry";
         document.body.appendChild(newGameBtn);
+        buttons.forEach(button => button.removeEventListener('click', evaluateRound));
         return;
     }
     if (playerPoints === 5){
         roundOutcome.textContent = "Player won, congratulations!"
         document.body.appendChild(newGameBtn);
+        buttons.forEach(button => button.removeEventListener('click', evaluateRound));
         return;
     }
         roundOutcome.textContent = outcome;
-}));
-buttons.forEach(button => button.addEventListener('transitionend', removeBorder));
+}
 
 function removeBorder(e){
     this.classList.remove("selected");
@@ -81,6 +84,7 @@ function playRound(playerSelection, computer_choice=computerPlay() ){
 }
 
 function Game(e){
+    buttons.forEach(button => button.addEventListener('click', evaluateRound));
     let btnGone = document.getElementById("newGameBtn");
     if (btnGone){
     document.body.removeChild(btnGone);
